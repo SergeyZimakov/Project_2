@@ -30,28 +30,32 @@ function loader() {
 
 function createCards(responseArray) {
     console.log(responseArray);
-    let row = $('<div class="row"></div>');
+    let data = $('<div class="d-flex flex-wrap"></div>');
     for(let i = 0; i < 10; i ++) {
         let item = responseArray[i];
-        row.append(createSingleCard(item));
+        data.append(createSingleCard(item));
         console.log(createSingleCard(item));
     }
-    return row;
+    return data;
 }
 
 function createSingleCard(obj) {
     console.log(obj);
-    let card = $('<div></div>');
-    card.append(
-        `<div class="col-6">
+    let singleCard = $('<div class="singleCard col-8 col-md-6 col-lg-4 col-xl-3"></div>');
+    singleCard.append(
+        `
             <div class="card">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                    <label class="custom-control-label" for="customSwitch1"></label>
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">${obj.symbol}</h5>
                     <p class="card-text">${obj.id}</p>
                     <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>
-        </div>`
+        `
     );
-    return card;
+    return singleCard;
 }
