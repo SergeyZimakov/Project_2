@@ -1,6 +1,15 @@
+
+const favoritesList = [];
+const stateForReplace = {
+    indexToRemove: '',
+    itemToAdd: ''
+};
+
 function start() {
     refresh();
 }
+
+
 
 function refresh() {
     $('#data').empty();
@@ -34,28 +43,80 @@ function createCards(responseArray) {
     for(let i = 0; i < 10; i ++) {
         let item = responseArray[i];
         data.append(createSingleCard(item));
-        console.log(createSingleCard(item));
     }
     return data;
 }
 
 function createSingleCard(obj) {
     console.log(obj);
-    let singleCard = $('<div class="singleCard col-8 col-md-6 col-lg-4 col-xl-3"></div>');
+    let singleCard = $(`<div class="singleCard col-8 col-md-6 col-lg-4 col-xl-3"></div>`);
     singleCard.append(
         `
-            <div class="card">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                    <label class="custom-control-label" for="customSwitch1"></label>
-                </div>
+            <div  id="${obj.id}" class="card">
+                <input type="checkbox" id="toggle-button" class="toggle-button" onchange="updateFavorites(event)">
                 <div class="card-body">
                     <h5 class="card-title">${obj.symbol}</h5>
                     <p class="card-text">${obj.id}</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a href="#" class="btn btn-primary">More info</a>
                 </div>
             </div>
         `
     );
     return singleCard;
 }
+
+function updateFavorites(e) {
+    //add to favirites
+    if (e.target.checked === true) {
+        if (favoritesList.length < 5) {
+            favoritesList.push(e.target.parentElement.id);
+            console.log(favoritesList);
+        }
+        else {
+            stateForReplace.itemToAdd = e.target.parentElement.id;
+            letUserRemoveItem();
+        }
+    }
+    //remove from favorites
+    else {
+        removeElementFromArray(favoritesList, favoritesList.indexOf(e.target.parentElement.id));
+        console.log(favoritesList);
+    }
+    
+}
+
+function letUserRemoveItem() {
+    createModalList();
+    $('#modal').show();
+}
+
+function markItem(e) {
+    stateForReplace.indexToRemove = e.target.id;
+    createModalList();
+    document.getElementById(stateForReplace.indexToRemove).className = 'modal-list-item toRemove';
+}
+
+
+ function createModalList() {
+    $('#modal-list').empty();
+    for (let i = 0; i < favoritesList.length; i++) {
+                $('#modal-list').append(
+                    `<div id="${i}" class="modal-list-item" onclick="markItem(event)">${favoritesList[i]}</div>`
+                );
+    }
+ }
+
+ function removeElementFromArray(arr, indexToRemove) {
+    for (let i = indexToRemove; i < (arr.length - 1); i ++) {
+        arr[i] = arr[i + 1];
+    }
+    arr.pop();
+ }
+
+ function replaceItems() {
+    favoritesList[stateForReplace.indexToRemove] = stateForReplace.itemToAdd;
+    $('#modal').hide();
+    document.getElementById(stateForReplace.itemToAdd).firstElementChild.checked = true;
+    document.getElementById(stateForReplace.itemToRemove).firstElementChild.checked = false;
+    
+ }
