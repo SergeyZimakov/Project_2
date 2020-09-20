@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,29 +11,41 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <script src="./js/main.js"></script>
-    
+
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/style.css">
-  </head>
-  <body onload="start()">
+</head>
+
+<body onload="start()">
     <header>
         <div class="container-fluid">
-            <div class="header_title"><h1>Crypto Info</h1></div>
+            <div class="header_title">
+                <h1>Crypto Info</h1>
+            </div>
         </div>
     </header>
-    <section>
+    <section id="nav">
         <div class="container-fluid">
-            <div class="navigation">
+            <div class="navigation d-flex flex-wrap">
                 <nav>
                     <ul>
-                        <li>Home</li>
-                        <li>Live Reports</li>
-                        <li>About</li>
-                     </ul>
+                        <li onclick="home()">Home</li>
+                        <li onclick="liveReports()">Live Reports</li>
+                        <li onclick="about()">About</li>
+                    </ul>
                 </nav>
+                <div class="searchInput">
+                    <input type="text"  id="searchItem" onchange="updateSearchItem()">
+                    <button onclick="search()">Search</button>
+                </div>
             </div>
+        </div>
+
+    </section>
+    <section id="home">
+        <div class="container-fluid">
             <div id="data"></div>
             <!-- <div class="test">
                 <button onclick="test()">test</button>
@@ -40,14 +53,22 @@
         </div>
     </section>
 
+    <section id="liveReports" style="display: none;">
+        This is Live Reports page!
+    </section>
+
+    <section id="about" style="display: none;">
+        This is about page!
+    </section>
+
     <div id="modal" class="modal">
 
         <!-- Modal content -->
         <div class="modal-content">
-          <h2>OOPS! You already have 5 items in your favorites list!</h2>
-          <h2>If you want to add new item, please choose one item from your list to replace and press SAVE: </h2>
-          <div id="modal-list">
-            <!-- <div id="0" class="modal-list-item" onclick="markItem(event)">
+            <h2>OOPS! You already have 5 items in your favorites list!</h2>
+            <h2>If you want to add new item, please choose one item from your list to replace and press SAVE: </h2>
+            <div id="modal-list">
+                <!-- <div id="0" class="modal-list-item" onclick="markItem(event)">
               item1
             </div>
             <div id="1" class="modal-list-item" onclick="markItem(event)">
@@ -56,18 +77,19 @@
             <div id="2" class="modal-list-item" onclick="markItem(event)">
               item3
             </div> -->
-            
 
-          </div>
-          <button type="button" onclick="replaceItems()">Save</button>
-          <button type="button" onclick="hideModal()">Cancel</button>
+
+            </div>
+            <button type="button" onclick="replaceItems()">Save</button>
+            <button type="button" onclick="hideModal()">Cancel</button>
         </div>
-      
-      </div>
-    
+
+    </div>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    
-  </body>
+
+</body>
+
 </html>
