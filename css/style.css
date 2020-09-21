@@ -3,7 +3,7 @@
 body {
     padding: 10px;
 }
-ul, li, a {
+nav ul, nav li, a {
   display: inline-block;
   text-decoration: none;
   padding: 0;
@@ -163,4 +163,21 @@ header {
   }
   .toRemove {
     text-decoration: line-through;
+  }
+
+
+  .aboutContent {
+    margin-top: 20px;
+    display: flex;
+    justify-content: start;
+  }
+
+  .aboutTitle {
+    text-align: center;
+    
+  }
+
+  .aboutContent img {
+    width: 30%;
+    margin-right: 15px;
   }

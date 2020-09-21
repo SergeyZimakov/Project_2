@@ -174,6 +174,7 @@ function markItem(e) {
  }
 
  function search() {
+    home();
     if (searchItem === '') {
         alert('Enter an id of crypto currency please.');
     }
@@ -192,3 +193,6 @@ function markItem(e) {
         //getting here if the item was not found
     }
  }
+
+
+ 
