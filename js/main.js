@@ -11,7 +11,6 @@ const stateForReplace = {
     itemToAdd: '',
     itemToRemove: ''
 };
-let searchItem = '';
 ///////////////////
 
 function start() {
@@ -81,12 +80,15 @@ function createSingleCard(obj) {
     let singleCard = $(`<div class="singleCard col-8 col-md-6 col-lg-4 col-xl-3"></div>`);
     singleCard.append(
         `
-            <div  id="${obj.id}" class="card">
+            <div  id="${obj.symbol}" class="card">
                 <input type="checkbox" id="toggle-button" class="toggle-button" onchange="updateFavorites(event)">
                 <div class="card-body">
                     <h5 class="card-title">${obj.symbol}</h5>
                     <p class="card-text">${obj.id}</p>
-                    <a href="#" class="btn btn-primary">More info</a>
+                    <div class="collapseMoreInfo" id="collapseMoreInfo">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                    </div>
+                    <button class="btn btn-primary" onclick="collapseMoreInfo(event)">More info</button>
                 </div>
             </div>
         `
@@ -164,7 +166,7 @@ function markItem(e) {
  }
 
  function updateSearchItem() {
-     searchItem = $('#searchItem').val();
+     let searchItem = $('#searchItem').val();
      if (searchItem === '') {///show again all cards after search if input field is empty
         let cards = $('#data').children().children();
         for (item of cards) {
@@ -175,8 +177,9 @@ function markItem(e) {
 
  function search() {
     home();
+    let searchItem = $('#searchItem').val();
     if (searchItem === '') {
-        alert('Enter an id of crypto currency please.');
+        alert('Enter a code of crypto currency please.');
     }
     else {
         let cards = $('#data').children().children();
@@ -189,10 +192,17 @@ function markItem(e) {
                 return;///stop the func if we found the item
             }
         }
-        alert('This Crypto Currenny did not found!\nMaybe it does not exist in your favorits list or id is incorrect.\nTry again please.');
+        alert('This Crypto Currenny did not found!\nMaybe it does not exist in your favorits list or code is incorrect.\nTry again please.');
         //getting here if the item was not found
     }
  }
 
+
+ function collapseMoreInfo(event) {
+     let btn = $(event.target);
+     btn.prev().toggle();
+     
+     
+ }
 
  
