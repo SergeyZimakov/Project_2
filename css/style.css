@@ -181,3 +181,7 @@ header {
     width: 30%;
     margin-right: 15px;
   }
+
+  .collapseMoreInfo {
+    display: none;
+  }

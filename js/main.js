@@ -5,16 +5,19 @@
 
 
 //////state////////
-const favoritesList = [];
-const stateForReplace = {
-    indexToRemove: '',
-    itemToAdd: '',
-    itemToRemove: ''
-};
-///////////////////
+const itemsToCopyToState = 20;
+let state = {
+    coins: [],
+    favoritesList: [],
+    forReplace: {
+        indexToReplace: '',
+        coinToAdd: '',
+        coinToRemove: ''
+    }
+}
 
 function start() {
-    refresh();
+    requestForCoins();
 }
 
 function home() {
@@ -33,9 +36,14 @@ function about() {
     $('#about').show();
 }
 
+function cloneItemsFromArrayToState(arr, numberOfItems) {
+    for (let i = 0; i < numberOfItems; i ++) {
+        state.coins[i] = arr[i];
+    }
+}
 
 
-function refresh() {
+function requestForCoins() {
     $('#data').empty();
     $.ajax({
         type: 'GET',
@@ -45,7 +53,9 @@ function refresh() {
             $('#data').html(loader());
         },
         success: function(response) {
-            $('#data').html(createCards(response));
+            // state.coins = [...response];
+            cloneItemsFromArrayToState(response, itemsToCopyToState);
+            $('#data').html(createCards());
             console.log(response);
         },
         error: function() {
@@ -64,98 +74,79 @@ function loader() {
 }
 //////////////////////////////
 
-//////////this func returns big div with all cards///////
-function createCards(responseArray) {
-    console.log(responseArray);
-    let data = $('<div class="d-flex flex-wrap"></div>');
-    for(let i = 0; i < 10; i ++) {
-        let item = responseArray[i];
-        data.append(createSingleCard(item));
-    }
-    return data;
+function createCards() {
+    console.log(state.coins);
+    $('#data').empty();
+    let innerHtml = '';
+    state.coins.forEach((coin, index) => innerHtml += createSingleCard(coin, index));
+    return innerHtml;
 }
 
-function createSingleCard(obj) {
-    console.log(obj);
-    let singleCard = $(`<div class="singleCard col-8 col-md-6 col-lg-4 col-xl-3"></div>`);
-    singleCard.append(
-        `
-            <div  id="${obj.symbol}" class="card">
-                <input type="checkbox" id="toggle-button" class="toggle-button" onchange="updateFavorites(event)">
-                <div class="card-body">
-                    <h5 class="card-title">${obj.symbol}</h5>
-                    <p class="card-text">${obj.id}</p>
-                    <div class="collapseMoreInfo" id="collapseMoreInfo">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                    </div>
-                    <button class="btn btn-primary" onclick="collapseMoreInfo(event)">More info</button>
+function createSingleCard(coin, index) {
+    return (
+    `<div id="${coin.symbol}" class="singleCard col-8 col-md-6 col-lg-4 col-xl-3">
+        <div class="card">
+            <input type="checkbox" id="toggle-button${index}" class="toggle-button" onclick="updateFavoritesList(event, ${index})">
+            <div class="card-body">
+                <h5 class="card-title">${coin.symbol}</h5>
+                <p class="card-text">${coin.id}</p>
+                <div class="collapseMoreInfo" id="collapseMoreInfo">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
                 </div>
+                <button class="btn btn-primary" onclick="collapseMoreInfo(${index})">More info</button>
             </div>
-        `
-    );
-    return singleCard;
-}
+        </div>
+    </div>`);
+    }
 
-///this func updates an array with favorites items, turns on/off switch button
-///and opens a window to choose an item to replace if its already 5 items in a list
-function updateFavorites(e) {
-    //add to favirites
-    if (e.target.checked === true) {
-        if (favoritesList.length < 5) {
-            favoritesList.push(e.target.parentElement.id);///parent element of a button is a div(card)
-            console.log(favoritesList);
+
+function updateFavoritesList(e, index) {
+    const toggleBtn = e.target;
+    if (toggleBtn.checked === true) { ///add to Favorites
+        if (state.favoritesList.length < 5) {
+            state.favoritesList.push(state.coins[index].name);
         }
         else {
-            stateForReplace.itemToAdd = e.target.parentElement.id;
-            letUserRemoveItem();//open modal window
+            console.log('openModal');
+            state.forReplace.coinToAdd = state.coins[index].name;
+            openModalWindow();
+
+
         }
     }
-    //remove from favorites
-    else {
-        removeElementFromArray(favoritesList, favoritesList.indexOf(e.target.parentElement.id));
-        console.log(favoritesList);
+    else { ///remove from favorites
+        state.favoritesList = state.favoritesList.filter((item, i) => i != index);
+        console.log(state.favoritesList);
     }
-    
 }
 
 ///open modal window and fill it///
-function letUserRemoveItem() {
+function openModalWindow() {
     createModalList();
     $('#modal').show();
 }
 
-///this func marks an item(line throw) by adding a class and saving users choose///
-function markItem(e) {
-    stateForReplace.indexToRemove = e.target.id;
-    stateForReplace.itemToRemove = favoritesList[stateForReplace.indexToRemove];
+function selectCoinToReplace(e) {
+    state.forReplace.coinToRemove = e.target.id;
     createModalList();
-    document.getElementById(stateForReplace.indexToRemove).className = 'modal-list-item toRemove';
+    document.getElementById(state.forReplace.coinToRemove).className = 'modal-list-item toRemove';
 }
 
-///mapping favorites list///
  function createModalList() {
     $('#modal-list').empty();
-    for (let i = 0; i < favoritesList.length; i++) {
-                $('#modal-list').append(
-                    `<div id="${i}" class="modal-list-item" onclick="markItem(event)">${favoritesList[i]}</div>`
-                );
-    }
+    let list = '';
+    state.favoritesList.forEach((item) => list +=  (`<div id="${item}" class="modal-list-item" onclick="selectCoinToReplace(event)">${item}</div>`))
+    $('#modal-list').html(list);
  }
 
- ///this func gets a pointer on array and index of cell and removes a value with this index from array///  
- function removeElementFromArray(arr, indexToRemove) {
-    for (let i = indexToRemove; i < (arr.length - 1); i ++) {
-        arr[i] = arr[i + 1];
-    }
-    arr.pop();
- }
+ 
 
- ///this function add a new item into favorites list instead of selected item by user in the modal///
- function replaceItems() {
-    favoritesList[stateForReplace.indexToRemove] = stateForReplace.itemToAdd;
+ function replaceCoinsInFavorites() {
+    let indexToRemove = state.favoritesList.indexOf(state.forReplace.coinToRemove);
+    state.favoritesList[indexToRemove] = state.forReplace.coinToAdd;
     $('#modal').hide();
-    document.getElementById(stateForReplace.itemToAdd).firstElementChild.checked = true;
-    document.getElementById(stateForReplace.itemToRemove).firstElementChild.checked = false;
+    // document.getElementById(stateForReplace.itemToAdd).firstElementChild.checked = true;
+    // document.getElementById(stateForReplace.itemToRemove).firstElementChild.checked = false;
     
  }
 
