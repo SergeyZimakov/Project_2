@@ -81,6 +81,9 @@ header {
 .card {
     position: relative;
 }
+.card-body {
+  width: 80%;
+}
 
 .toggle-button {
     position: absolute;
@@ -128,12 +131,12 @@ header {
   .modal {
     display: none; 
     position: fixed; 
-    z-index: 1; 
+    z-index: 10; 
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 60%; 
-    height: 70%; 
+    width: 75%; 
+    height: 85%; 
     padding: 20px;
     overflow: auto; 
     background-color: rgb(247, 240, 240);
@@ -142,11 +145,15 @@ header {
   }
 
   .modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: transparent;
     border: none;
     margin: auto;
     padding: 20px;
     width: 80%;
+    height: 90%;
   }
 
   .modal-list-item {
@@ -154,22 +161,48 @@ header {
     border: 2px solid black;
     border-radius: 25px;
     width: 100%;
-    height: 40px;
+    padding: 10px;
     font-size: 26px;
     font-weight: bold;
     text-align: center;
     margin: 10px;
     cursor: pointer;
   }
+  .modal-list-item:hover {
+    background-color: rgba(255, 0, 51, 0.075);
+  }
   .toRemove {
     text-decoration: line-through;
+    background-color: rgba(255, 0, 51, 0.274);
+  }
+
+  .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .modal-buttons button {
+    margin: 20px;
+    width: 100px;
+    height: 60px;
+    border: 2px solid black;
+    border-radius: 25px;
+    background-color: transparent;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .modal-buttons button:hover{
+    background-color: black;
+    color: white;
   }
 
 
   .aboutContent {
     margin-top: 20px;
     display: flex;
-    justify-content: start;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
   }
 
   .aboutTitle {
@@ -178,10 +211,20 @@ header {
   }
 
   .aboutContent img {
-    width: 30%;
-    margin-right: 15px;
+    width: 50%;
+    margin: 15px;
+    align-self: center;
+  }
+
+  .aboutInfo {
+    width: 80%;
+    align-self: flex-start;
   }
 
   .collapseMoreInfo {
     display: none;
+    margin: 10px 0px;
+  }
+  .collapseMoreInfo img {
+    margin: 10px 0px;
   }
