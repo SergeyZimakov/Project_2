@@ -153,6 +153,7 @@ function openModalWindow() {
     toggleBtnToSwitchOf.checked = false;
     state.favoritesList = state.favoritesList.filter((item, index) => index != state.indexOfSelectedCoin)
     $('#modal').hide();
+    state.indexOfSelectedCoin = '';
  }
 
  ///hiding a modal if no changes were made(Cancel button)
