@@ -64,7 +64,6 @@ function requestForCoins() {
             state.coins = [...response];
             // cloneItemsFromArrayToState(response, firstIndexToCopyToState, lastIndexToCopyToState);//using for facilitating
             $('#data').html(createCards());
-            console.log(state.coins);
         },
         error: function() {
             console.log('error');
@@ -98,7 +97,7 @@ function createSingleCard(coin, index) {
                 <h5 class="card-title">${coin.symbol}</h5>
                 <p class="card-text">${coin.id}</p>
                 <div class="collapseMoreInfo" id="${coin.id}"></div>
-                <button class="btn btn-primary" onclick="collapseMoreInfo(event, ${index})">More info</button>
+                <button class="btn btn-warning" onclick="collapseMoreInfo(event, ${index})">More info</button>
             </div>
         </div>
     </div>`);
@@ -112,15 +111,12 @@ function updateFavoritesList(e, index) {
             coin: state.coins[index].symbol,
             toggleButtonId: toggleBtn.id
         });
-        console.log(state.favoritesList);
     }
     else { ///remove from favorites
         state.favoritesList = state.favoritesList.filter((item, i) => item.coin != state.coins[index].symbol);
-        console.log(state.favoritesList);
     } 
     if (state.favoritesList.length > limitOfFavorites) { ///out of limit
         openModalWindow();
-        console.log(state.favoritesList);
     }
 }
 
@@ -151,14 +147,12 @@ function openModalWindow() {
 ///this func runs when user clicks "Save" in modal
  function removeSelectedCoinFromFavorites() {
     if (!state.indexOfSelectedCoin) { //if user did not mark any coin to remove
-        abortChangesInFavorites();//"Save" button will work like "Cancel"
-        return;
+        alert('Choose coin to replace or press Cancel please.');
     }
     let toggleBtnToSwitchOf = document.getElementById(state.favoritesList[state.indexOfSelectedCoin].toggleButtonId);
     toggleBtnToSwitchOf.checked = false;
     state.favoritesList = state.favoritesList.filter((item, index) => index != state.indexOfSelectedCoin)
     $('#modal').hide();
-    console.log(state.favoritesList);
  }
 
  ///hiding a modal if no changes were made(Cancel button)
@@ -167,7 +161,6 @@ function openModalWindow() {
      toggleBtnToSwitchOf.checked = false;
      state.favoritesList.pop();
      $('#modal').hide();
-     console.log(state.favoritesList);
  }
 
  function updateSearchItem() {
@@ -222,7 +215,6 @@ function openModalWindow() {
                 document.getElementById(id).innerHTML = loader();
             },
             success: function(response) {
-                console.log('responseMoreInfo:', response);
                 cache[id] = {
                     usd: response.market_data.current_price.usd ? `$ ${response.market_data.current_price.usd}` : 'no information',
                     eur: response.market_data.current_price.eur ? `€ ${response.market_data.current_price.eur}` : 'no information', 
@@ -230,7 +222,6 @@ function openModalWindow() {
                     lastRequest: new Date,
                     img: response.image.small
                 }
-                console.log('cahce after response:', cache);
                 document.getElementById(id).innerHTML = moreInfoToHtml(cache[id]);
             },
             error: function() {
@@ -242,13 +233,11 @@ function openModalWindow() {
             document.getElementById(id).innerHTML = moreInfoToHtml(cache[id]);
             
      }
-     console.log('html in createMoreInfo', html);
  }
 
 
 
  function moreInfoToHtml(obj) {
-     console.log('moreInfoToHtml obj:', obj)
      return (
         `<img src="${obj.img}">
          <table>
