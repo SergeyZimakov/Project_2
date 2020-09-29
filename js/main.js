@@ -6,8 +6,8 @@
 
 //////state////////
 ///-setting global variables takes up place in memory, but allows easy access if needed-///
-const firstIndexToCopyToState = 0;
-const lastIndexToCopyToState = 50;
+// const firstIndexToCopyToState = 0;
+// const lastIndexToCopyToState = 50;
 const limitOfFavorites = 5;
 const timeToRefreshMoreInfo = 120000; // 120000 ms = 2 min
 let state = {
@@ -103,7 +103,7 @@ function createSingleCard(coin, index) {
     </div>`);
     }
 
-
+//this func addes or removes coin from favorite list and opens modal window if needed 
 function updateFavoritesList(e, index) {
     const toggleBtn = e.target;
     if (toggleBtn.checked === true) { ///add to Favorites
@@ -138,6 +138,7 @@ function openModalWindow() {
     $('#modal-list').html(list);
  }
 
+ ///mark and save the coin that going to be replaced if user will press SAVE
  function selectCoinToReplace(e) {
     state.indexOfSelectedCoin = e.target.id;
     createModalList();
@@ -150,13 +151,14 @@ function openModalWindow() {
         alert('Choose coin to replace or press Cancel please.');
     }
     let toggleBtnToSwitchOf = document.getElementById(state.favoritesList[state.indexOfSelectedCoin].toggleButtonId);
-    toggleBtnToSwitchOf.checked = false;
+    toggleBtnToSwitchOf.checked = false;///turning off the toggle button of replaced coin
     state.favoritesList = state.favoritesList.filter((item, index) => index != state.indexOfSelectedCoin)
     $('#modal').hide();
     state.indexOfSelectedCoin = '';
  }
 
  ///hiding a modal if no changes were made(Cancel button)
+ ///the last member of array is a coin that user wanted to add but pressed CANCEL
  function abortChangesInFavorites() {
      let toggleBtnToSwitchOf = document.getElementById(state.favoritesList[limitOfFavorites].toggleButtonId);
      toggleBtnToSwitchOf.checked = false;

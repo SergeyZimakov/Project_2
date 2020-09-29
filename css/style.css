@@ -202,7 +202,6 @@ nav li:hover {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* align-items: center; */
   }
 
   .aboutTitle {
