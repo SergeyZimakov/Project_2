@@ -6,8 +6,8 @@
 
 //////state////////
 ///-setting global variables takes up place in memory, but allows easy access if needed-///
-// const firstIndexToCopyToState = 0;
-// const lastIndexToCopyToState = 50;
+const firstIndexToCopyToState = 50;
+const lastIndexToCopyToState = 150;
 const limitOfFavorites = 5;
 const timeToRefreshMoreInfo = 120000; // 120000 ms = 2 min
 let state = {
@@ -61,8 +61,8 @@ function requestForCoins() {
             $(`#data`).html(loader());
         },
         success: function(response) {
-            state.coins = [...response];
-            // cloneItemsFromArrayToState(response, firstIndexToCopyToState, lastIndexToCopyToState);//using for facilitating
+            // state.coins = [...response];
+            cloneItemsFromArrayToState(response, firstIndexToCopyToState, lastIndexToCopyToState);//using for facilitating
             $('#data').html(createCards());
         },
         error: function() {
